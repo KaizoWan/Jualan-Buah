@@ -4,6 +4,7 @@
  */
 package asia.ridwan.jualanbuah;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -226,20 +227,39 @@ public class JualanBuahSaja extends javax.swing.JFrame {
         namaBuah = cmbNamaBuah.getSelectedItem().toString();
         jumlahBuah = txtJumlahBuah.getText();
         jenisPembayaran = cmbJenisPembayaran.getSelectedItem().toString();
-        
+
         if (rdKg.isSelected()) {
             rd = "Per Kg";
         } else if (rdEceran.isSelected()) {
             rd = "Eceran";
         }
-        
+
         if (rdBelum.isSelected()) {
             kb = "Setengah Matang";
         } else if (rdSudah.isSelected()) {
             kb = "Sudah Matang";
         }
-        model.addRow(new Object[]{namaBuah,jumlahBuah,rd,kb,jenisPembayaran});
-        tblHasil.setModel(model);
+
+        // Menampilkan JOptionPane konfirmasi
+        int confirm = JOptionPane.showConfirmDialog(null, 
+            "Apakah Anda yakin ingin menambahkan data berikut?\n" +
+            "Nama Buah: " + namaBuah + "\n" +
+            "Jumlah Buah: " + jumlahBuah + "\n" +
+            "Jenis: " + rd + "\n" +
+            "Kondisi: " + kb + "\n" +
+            "Jenis Pembayaran: " + jenisPembayaran,
+            "Konfirmasi Tambah Data", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Tambahkan data ke tabel jika pengguna memilih "Ya"
+            model.addRow(new Object[]{namaBuah, jumlahBuah, rd, kb, jenisPembayaran});
+            tblHasil.setModel(model);
+        } else {
+            // Jika pengguna memilih "Batal", lakukan sesuatu jika diperlukan (opsional)
+            JOptionPane.showMessageDialog(null, "Data tidak jadi ditambahkan.", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnTambahActionPerformed
 
     /**
