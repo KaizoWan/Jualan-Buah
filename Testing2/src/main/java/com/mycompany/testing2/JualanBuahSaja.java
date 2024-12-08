@@ -17,13 +17,13 @@ public class JualanBuahSaja extends javax.swing.JFrame {
      * Creates new form JualanBuahSaja
      */
     DefaultTableModel model;
-    String namaBuah, jumlahBuah, rd, kb, jenisPembayaran;
+    String namaBuah, jumlahBuah, rd, kb, jenisPembayaran, unitPengukuran;
     
     public JualanBuahSaja() {
         initComponents();
         
-        Object kolom[] = {"Nama Buah", "Jumlah Buah", "Harga Buah", "Kondisi Buah", "Jenis Pembayaran", "Total Harga"};
-        Object data[][] = {{"Pisang", "123", "Per Kg", "Sudah Matang", "Cash", "Rp 100000"}};
+        Object kolom[] = {"Nama Buah", "Jumlah Buah", "Harga Buah", "Kondisi Buah", "Jenis Pembayaran", "Total Harga", "Satuan"};
+        Object data[][] = {{"Pisang", "123", "Per Kg", "Sudah Matang", "Cash", "Rp 100000", "Ons"}};
         model = new DefaultTableModel(data, kolom);
         
         tblHasil.setModel(model);
@@ -61,8 +61,10 @@ public class JualanBuahSaja extends javax.swing.JFrame {
         btnTambah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
         cmbNamaBuah = new javax.swing.JTextField();
+        rdTer = new javax.swing.JRadioButton();
+        rdBel = new javax.swing.JRadioButton();
+        cmbUnitPengukuran = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -78,7 +80,12 @@ public class JualanBuahSaja extends javax.swing.JFrame {
         jLabel6.setText("Kondisi Buah");
 
         buttonGroup1.add(rdKg);
-        rdKg.setText("Per Kg");
+        rdKg.setText("Grosir");
+        rdKg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdKgActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rdEceran);
         rdEceran.setText("Eceran");
@@ -96,17 +103,17 @@ public class JualanBuahSaja extends javax.swing.JFrame {
 
         tblHasil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nama Buah", "Jumlah Buah", "Pembelian", "Kondisi Buah", "Jenis Pembayaran", "Total Harga"
+                "Nama Buah", "Jumlah Buah", "Pembelian", "Kondisi Buah", "Jenis Pembayaran", "Total Harga", "Satuan"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -141,16 +148,18 @@ public class JualanBuahSaja extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Note : 10.000 / Kg / 10 Buah ( Per-Kg ) ~~~ 2000 / Buah ( Eceran )");
+        buttonGroup2.add(rdTer);
+        rdTer.setText("Terlalu Matang");
+
+        buttonGroup2.add(rdBel);
+        rdBel.setText("Belum Matang");
+
+        cmbUnitPengukuran.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ons", "Gram", "Kg" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(249, 249, 249))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,59 +171,64 @@ public class JualanBuahSaja extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel5)
                             .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rdBel))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtJumlahBuah, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                            .addComponent(cmbJenisPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cmbNamaBuah))
-                                        .addContainerGap(620, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(rdKg)
-                                            .addComponent(rdBelum))
-                                        .addGap(30, 30, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(rdSudah)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(rdEceran)
-                                                .addGap(72, 72, 72)
-                                                .addComponent(jLabel8)))
-                                        .addContainerGap(151, Short.MAX_VALUE))))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(rdBelum)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdSudah)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdTer))
+                                    .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtJumlahBuah, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbUnitPengukuran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbJenisPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbNamaBuah, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rdKg)
+                                .addGap(66, 66, 66)
+                                .addComponent(rdEceran))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 50, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(208, 208, 208))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel4)
-                .addGap(51, 51, 51)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(cmbNamaBuah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtJumlahBuah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtJumlahBuah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbUnitPengukuran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(rdKg)
-                    .addComponent(rdEceran)
-                    .addComponent(jLabel8))
+                    .addComponent(rdEceran))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(rdBelum)
-                    .addComponent(rdSudah))
+                    .addComponent(rdSudah)
+                    .addComponent(rdTer)
+                    .addComponent(rdBel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -226,7 +240,7 @@ public class JualanBuahSaja extends javax.swing.JFrame {
                     .addComponent(btnKeluar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -244,6 +258,7 @@ public class JualanBuahSaja extends javax.swing.JFrame {
         namaBuah = cmbNamaBuah.getText();
         jumlahBuah = txtJumlahBuah.getText();
         jenisPembayaran = cmbJenisPembayaran.getSelectedItem().toString();
+        unitPengukuran = cmbUnitPengukuran.getSelectedItem().toString();
 
         int jumlah; 
         try {
@@ -255,27 +270,35 @@ public class JualanBuahSaja extends javax.swing.JFrame {
 
         double hargaTotal = 0;
 
-        if (rdKg.isSelected()) {
-            rd = "Per Kg";
-            if (jumlah < 10) {
-                JOptionPane.showMessageDialog(this, "Minimal pembelian untuk Per Kg adalah 10 buah!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                if (unitPengukuran.equals("Kg")) {
+            if (rdKg.isSelected()) {
+                rd = "Grosir";
+                // Untuk Grosir, minimal pembelian adalah 10 Kg
+                if (jumlah < 10) {
+                    JOptionPane.showMessageDialog(this, "Minimal pembelian untuk Grosir (Kg) adalah 10 Kg!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                hargaTotal = jumlah * 5000; // Harga untuk Grosir per Kg
+            } else {
+                JOptionPane.showMessageDialog(this, "Grosir hanya bisa dipilih untuk pembelian per Kg!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            hargaTotal = jumlah * 10000;
-            
-        } else if (rdEceran.isSelected()) {
-            rd = "Eceran";
-            if (jumlah < 1) {
-                JOptionPane.showMessageDialog(this, "Minimal pembelian untuk Eceran adalah 1 buah!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            hargaTotal = jumlah * 2000;
+        } else if (unitPengukuran.equals("Gram")) {
+            rd = "Eceran"; // Eceran berlaku untuk Gram
+            hargaTotal = jumlah * 3000; // Harga per Gram per 1 Buah
+        } else if (unitPengukuran.equals("Ons")) {
+            rd = "Eceran"; // Eceran berlaku untuk Ons
+            hargaTotal = jumlah * 1000; // Harga per Ons per 1 Buah
         }
 
         if (rdBelum.isSelected()) {
             kb = "Setengah Matang";
         } else if (rdSudah.isSelected()) {
             kb = "Sudah Matang";
+        } else if (rdBel.isSelected()) {
+            kb = "Belum Matang";
+        } else if (rdTer.isSelected()) {
+            kb = "Terlalu Matang";
         }
 
         int confirm = JOptionPane.showConfirmDialog(this, 
@@ -291,7 +314,7 @@ public class JualanBuahSaja extends javax.swing.JFrame {
             JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            model.addRow(new Object[]{namaBuah, jumlah, rd, kb, jenisPembayaran, "Rp " + hargaTotal});
+            model.addRow(new Object[]{namaBuah, jumlah, rd, kb, jenisPembayaran, "Rp " + hargaTotal, unitPengukuran});
             tblHasil.setModel(model);
             JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -303,6 +326,10 @@ public class JualanBuahSaja extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void rdKgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdKgActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdKgActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,18 +382,20 @@ public class JualanBuahSaja extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JComboBox<String> cmbJenisPembayaran;
     private javax.swing.JTextField cmbNamaBuah;
+    private javax.swing.JComboBox<String> cmbUnitPengukuran;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rdBel;
     private javax.swing.JRadioButton rdBelum;
     private javax.swing.JRadioButton rdEceran;
     private javax.swing.JRadioButton rdKg;
     private javax.swing.JRadioButton rdSudah;
+    private javax.swing.JRadioButton rdTer;
     private javax.swing.JTable tblHasil;
     private javax.swing.JTextField txtJumlahBuah;
     // End of variables declaration//GEN-END:variables
